@@ -106,7 +106,7 @@
         </div>
         
         <div id="selfieResult" class="hidden">
-            <p class="photo-status">¡Foto Guardada! ✅</p>
+            <p class="photo-status">¡Este soy yo! 😎</p>
             <img id="avatarPreview" class="avatar-img" alt="Avatar">
             <button class="btn-dark" onclick="retakeSelfie()" style="margin-top: 0; width: 60%;">Tomar otra</button>
         </div>
@@ -355,17 +355,28 @@
         function closeModal() { document.getElementById('checkoutModal').classList.add('hidden'); }
 
         function confirmLeave() {
+            // 1. Enviar el mensaje al Bar
             connections.forEach(c => { if(c.open) c.send({ type: 'checkout', alias: myData.alias, avatar: myData.avatar, count: myCount }); });
             closeModal();
-            setTimeout(() => { resetApp(); }, 1000);
+            
+            // 2. Dar feedback visual de que estás saliendo
+            document.getElementById('appPersonaUI').style.opacity = '0.5';
+            document.getElementById('welcomeMsgPersona').innerText = "¡Hasta pronto! Saliendo...";
+            
+            // 3. Esperar 1.5 segundos para que el mensaje P2P llegue al Bar y luego reiniciar
+            setTimeout(() => {
+                resetApp(); // Esta función ya te devuelve a la pantalla de inicio y apaga cámaras
+            }, 1500);
+        
         }
 
         function resetApp() {
             try { if (peer) { connections.forEach(c => c.close()); peer.destroy(); peer = null; } } catch(e) {}
             try { 
-                // Apagar todas las cámaras abiertas
+                // Apagar todas las cámaras
                 Object.values(cameraStreams).forEach(stream => { if(stream) stream.getTracks().forEach(t => t.stop()); }); 
-                if(document.getElementById('selfieCam').srcObject) document.getElementById('selfieCam').srcObject.getTracks().forEach(t => t.stop());
+                const selfieVid = document.getElementById('selfieCam');
+                if(selfieVid && selfieVid.srcObject) selfieVid.srcObject.getTracks().forEach(t => t.stop());
             } catch(e) {}
             
             myCount = 0; connections = []; activeClients = {}; leftClients = {}; isScanning = { persona: true, bar: true };
@@ -378,7 +389,9 @@
             document.getElementById('selfieArea').classList.remove('hidden');
             document.getElementById('aliasInput').value = '';
             document.getElementById('peerIdInput').value = '';
+            document.getElementById('appPersonaUI').style.opacity = '1'; // Restaurar pantalla
             
+            // Volver al menú principal
             document.querySelectorAll('.card').forEach(el => el.classList.add('hidden'));
             document.getElementById('roleSelector').classList.remove('hidden');
         }
