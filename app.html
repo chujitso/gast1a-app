@@ -25,7 +25,8 @@
         .btn-silver { background: linear-gradient(45deg, #888, #aaa); color: #000; border: none; padding: 12px 25px; border-radius: 50px; font-weight: 800; font-size: 1em; cursor: pointer; width: 40%; }
         .btn-dark { background: rgba(255,255,255,0.1); border: 1px solid #555; color: #fff; padding: 12px 15px; border-radius: 50px; cursor: pointer; width: 45%; font-weight: 600; font-size: 1.1em; }
 
-        .avatar-img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 4px solid #FFD700; margin: 15px auto; display: block; box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); filter: contrast(1.6) saturate(2.5) brightness(1.1); }
+        /* Selfie natural: Quitamos el filtro de caricatura */
+        .avatar-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #FFD700; margin: 15px auto; display: block; box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
         .facade-img { width: 100%; height: 150px; object-fit: cover; border-radius: 15px; border: 2px solid #FFD700; margin: 10px 0; }
 
         .counter-box { font-size: 4.5em; color: #FFD700; font-weight: 900; margin: 10px 0; text-shadow: 0 0 30px rgba(255,215,0,0.5); line-height: 1; }
@@ -64,7 +65,7 @@
         .clients-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px; }
         .client-card { background: rgba(0,0,0,0.5); border: 1px solid #FFD700; padding: 10px; border-radius: 15px; width: 90px; text-align: center; }
         .client-card.left { opacity: 0.4; border-color: #555; }
-        .client-card img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; filter: contrast(1.5) saturate(2); }
+        .client-card img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
         .client-card p { margin: 5px 0 0; font-size: 0.8em; font-weight: 600; color: #FFD700; }
         .client-card.left p { color: #888; }
         .client-card .mini-count { font-size: 1.2em; color: #fff; font-weight: 900; }
@@ -81,7 +82,7 @@
         <div class="bubble" style="left:70%; width:50px; height:50px; animation-delay:4s;"></div>
     </div>
 
-    <!-- MODAL DE RETIRO (Oculto por defecto) -->
+    <!-- MODAL DE RETIRO -->
     <div id="checkoutModal" class="modal-overlay hidden">
         <div class="modal-card">
             <h2>¿Te vas tan pronto?</h2>
@@ -107,7 +108,7 @@
     <div id="regPersona" class="card hidden">
         <h2>Crea tu Avatar</h2>
         <input type="text" id="aliasInput" placeholder="Tu alias (Ej: El Loco)">
-        <p style="font-size:0.9em; color:#aaa;">Tómate una foto:</p>
+        <p style="font-size:0.9em; color:#aaa;">Tómate una foto (Natural y Nítida):</p>
         <video id="selfieCam" autoplay playsinline muted width="200" style="border-radius:50%; border: 3px solid #FFD700;"></video>
         <br>
         <button class="btn-gold" onclick="takeSelfie()">¡Decir Queso! 📸</button>
@@ -137,8 +138,6 @@
         <h2 id="welcomeMsgPersona">¡Salud!</h2>
         <div id="avatarContainerPersona"></div>
         <div class="counter-box" id="counterDisplayPersona">0</div>
-        
-        <!-- Muro visual de cervezas -->
         <div id="beerWallPersona" class="beer-wall"></div>
 
         <video id="detectorCamPersona" autoplay playsinline muted></video>
@@ -150,7 +149,6 @@
             <button class="btn-dark" id="camToggleBtnPersona" onclick="toggleCamera('persona')">Pausar ⏸️</button>
         </div>
 
-        <!-- BOTÓN EXIT NEÓN -->
         <div class="exit-door-container">
             <div class="neon-sign">EXIT</div>
             <div class="exit-door-btn" onclick="leaveParche()">
@@ -209,15 +207,20 @@
         }
 
         async function setupSelfieCam() {
-            try { const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } }); document.getElementById('selfieCam').srcObject = stream; cameraStreams.persona = stream; } catch(e) { alert("Activa la cámara para el avatar"); }
+            try { const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 400, height: 400 } }); document.getElementById('selfieCam').srcObject = stream; cameraStreams.persona = stream; } catch(e) { alert("Activa la cámara para el avatar"); }
         }
 
         function takeSelfie() {
             const video = document.getElementById('selfieCam'); const canvas = document.getElementById('selfieCanvas');
-            canvas.width = 200; canvas.height = 200; const ctx = canvas.getContext('2d');
-            ctx.translate(canvas.width, 0); ctx.scale(-1, 1); ctx.drawImage(video, 0, 0, 200, 200);
-            myData.avatar = canvas.toDataURL('image/jpeg');
+            // Alta resolución
+            canvas.width = 400; canvas.height = 400; 
+            const ctx = canvas.getContext('2d');
+            // Efecto espejo para que se vea natural al tomarla
+            ctx.translate(canvas.width, 0); ctx.scale(-1, 1);
+            ctx.drawImage(video, 0, 0, 400, 400);
+            myData.avatar = canvas.toDataURL('image/jpeg', 0.9);
             document.getElementById('avatarPreview').src = myData.avatar; document.getElementById('avatarPreview').classList.remove('hidden');
+            // Apagar cámara frontal para ahorrar batería
             video.srcObject.getTracks().forEach(t => t.stop());
         }
 
@@ -246,20 +249,47 @@
                 if(isHost) {
                     document.getElementById('myRoomId').innerText = myId;
                     peer.on('connection', (conn) => {
-                        connections.push(conn); conn.on('open', () => { conn.send({ type: 'sync-request' }); });
+                        connections.push(conn);
                         conn.on('data', (data) => {
-                            if(data.type === 'update') { activeClients[conn.peer] = { alias: data.alias, avatar: data.avatar, count: data.count }; renderClients(); } 
-                            else if(data.type === 'checkout') { leftClients[conn.peer] = { alias: data.alias, avatar: data.avatar, count: data.count }; delete activeClients[conn.peer]; renderClients(); }
+                            if(data.type === 'register') {
+                                // LÓGICA DE ALIAS ÚNICO: El Bar verifica si el alias ya existe
+                                let finalAlias = data.alias;
+                                let counter = 1;
+                                while(checkAliasExists(finalAlias)) {
+                                    counter++;
+                                    finalAlias = `${data.alias} ${counter}`;
+                                }
+                                // Guardar con el alias final
+                                activeClients[conn.peer] = { alias: finalAlias, avatar: data.avatar, count: 0 };
+                                // Avisar al cliente cuál es su alias final
+                                conn.send({ type: 'alias-approved', alias: finalAlias });
+                                renderClients();
+                            } 
+                            else if(data.type === 'update') { if(activeClients[conn.peer]) { activeClients[conn.peer].count = data.count; renderClients(); } } 
+                            else if(data.type === 'checkout') { if(activeClients[conn.peer]) { leftClients[conn.peer] = activeClients[conn.peer]; leftClients[conn.peer].count = data.count; delete activeClients[conn.peer]; renderClients(); } }
                         });
                         conn.on('close', () => { if(activeClients[conn.peer]) { leftClients[conn.peer] = activeClients[conn.peer]; delete activeClients[conn.peer]; renderClients(); } });
                     });
                 } else {
                     const conn = peer.connect(targetId); connections.push(conn);
-                    conn.on('open', () => { conn.send({ type: 'update', alias: myData.alias, avatar: myData.avatar, count: myCount }); });
-                    conn.on('data', (data) => { if(data.type === 'sync-request') { conn.send({ type: 'update', alias: myData.alias, avatar: myData.avatar, count: myCount }); } });
+                    conn.on('open', () => { conn.send({ type: 'register', alias: myData.alias, avatar: myData.avatar }); });
+                    conn.on('data', (data) => {
+                        if(data.type === 'alias-approved') {
+                            myData.alias = data.alias; // Actualizo mi alias si el Bar lo modificó
+                            document.getElementById('welcomeMsgPersona').innerText = `¡Salud, ${myData.alias}!`;
+                            showAppUI(); // Muestro la app solo cuando el Bar me aprueba
+                        }
+                        else if(data.type === 'sync-request') { conn.send({ type: 'update', alias: myData.alias, avatar: myData.avatar, count: myCount }); }
+                    });
                 }
-                showAppUI();
+                if(isHost) showAppUI(); // El Bar entra directo
             });
+        }
+
+        function checkAliasExists(alias) {
+            for (const id in activeClients) { if (activeClients[id].alias === alias) return true; }
+            for (const id in leftClients) { if (leftClients[id].alias === alias) return true; }
+            return false;
         }
 
         function showAppUI() {
@@ -291,28 +321,15 @@
             requestAnimationFrame(() => detectLoop(video, statusId));
         }
 
-        function scanAndAdd(type) {
-            if (visibleItems > 0) { myCount += visibleItems; updateMyCount(type); if(navigator.vibrate) navigator.vibrate([100, 50, 100]); } 
-            else { if(navigator.vibrate) navigator.vibrate(300); }
-        }
-
+        function scanAndAdd(type) { if (visibleItems > 0) { myCount += visibleItems; updateMyCount(type); if(navigator.vibrate) navigator.vibrate([100, 50, 100]); } else { if(navigator.vibrate) navigator.vibrate(300); } }
         function manualAdd(type) { myCount++; updateMyCount(type); }
 
         function updateMyCount(type) {
-            if(type === 'persona') {
-                document.getElementById('counterDisplayPersona').innerText = myCount;
-                updateBeerWall(); // Actualizar muro visual
-                connections.forEach(c => c.open && c.send({ type: 'update', alias: myData.alias, avatar: myData.avatar, count: myCount }));
-            } else { renderClients(); }
+            if(type === 'persona') { document.getElementById('counterDisplayPersona').innerText = myCount; updateBeerWall(); connections.forEach(c => c.open && c.send({ type: 'update', alias: myData.alias, avatar: myData.avatar, count: myCount })); } 
+            else { renderClients(); }
         }
 
-        function updateBeerWall() {
-            const wall = document.getElementById('beerWallPersona');
-            wall.innerHTML = ''; // Limpiar muro
-            for(let i = 0; i < myCount; i++) {
-                wall.innerHTML += `<span class="beer-icon">🍻</span>`;
-            }
-        }
+        function updateBeerWall() { const wall = document.getElementById('beerWallPersona'); wall.innerHTML = ''; for(let i = 0; i < myCount; i++) { wall.innerHTML += `<span class="beer-icon">🍻</span>`; } }
 
         function toggleCamera(type) {
             const videoId = type === 'persona' ? 'detectorCamPersona' : 'detectorCamBar'; const btnId = type === 'persona' ? 'camToggleBtnPersona' : 'camToggleBtnBar'; const statusId = type === 'persona' ? 'aiStatusPersona' : 'aiStatusBar';
@@ -321,26 +338,29 @@
             else { isScanning[type] = true; video.play(); btn.innerText = "⏸️"; detectLoop(video, statusId); }
         }
 
-        // --- LÓGICA DEL MODAL DE RETIRO ---
-        function leaveParche() {
-            document.getElementById('checkoutCount').innerText = myCount; // Poner el número en el modal
-            document.getElementById('checkoutModal').classList.remove('hidden'); // Mostrar modal
-        }
-
-        function closeModal() {
-            document.getElementById('checkoutModal').classList.add('hidden'); // Ocultar modal
-        }
+        function leaveParche() { document.getElementById('checkoutCount').innerText = myCount; document.getElementById('checkoutModal').classList.remove('hidden'); }
+        function closeModal() { document.getElementById('checkoutModal').classList.add('hidden'); }
 
         function confirmLeave() {
-            connections.forEach(c => c.open && c.send({ type: 'checkout', alias: myData.alias, avatar: myData.avatar, count: myCount }));
+            // 1. Enviar mensaje al Bar
+            connections.forEach(c => { if(c.open) c.send({ type: 'checkout', alias: myData.alias, avatar: myData.avatar, count: myCount }); });
             closeModal();
-            setTimeout(() => resetApp(), 500);
+            // 2. Darle 1 segundo al mensaje para viajar por internet antes de destruir la conexión
+            setTimeout(() => {
+                resetApp();
+            }, 1000);
         }
 
         function resetApp() {
-            if (peer) { connections.forEach(c => c.close()); peer.destroy(); peer = null; }
-            Object.values(cameraStreams).forEach(stream => { if(stream) stream.getTracks().forEach(t => t.stop()); });
+            try { if (peer) { connections.forEach(c => c.close()); peer.destroy(); peer = null; } } catch(e) { console.error(e); }
+            try { Object.values(cameraStreams).forEach(stream => { if(stream) stream.getTracks().forEach(t => t.stop()); }); } catch(e) { console.error(e); }
+            
             myCount = 0; connections = []; activeClients = {}; leftClients = {}; isScanning = { persona: true, bar: true };
+            
+            // Limpiar interfaz visual
+            document.getElementById('beerWallPersona').innerHTML = '';
+            document.getElementById('counterDisplayPersona').innerText = '0';
+            
             document.querySelectorAll('.card').forEach(el => el.classList.add('hidden'));
             document.getElementById('roleSelector').classList.remove('hidden');
         }
