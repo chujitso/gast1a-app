@@ -1,0 +1,17 @@
+{
+  "name": "GasT1a - Brinda con el Parche",
+  "short_name": "GasT1a",
+  "description": "Cuenta cervezas y postres con tu parche usando IA",
+  "start_url": "/app.html",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#FFD700",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

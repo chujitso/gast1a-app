@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GasT1a - Brinda con tu parche</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;900&display=swap');
+        body { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; background: #0a0a0a; color: #fff; overflow-x: hidden; }
+        
+        /* Fondo animado */
+        .bg-bubbles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .bubble { position: absolute; bottom: -50px; background: rgba(255, 215, 0, 0.1); border-radius: 50%; animation: rise 8s infinite ease-in; }
+        @keyframes rise { 0% { bottom: -50px; transform: translateX(0); } 50% { opacity: 0.5; } 100% { bottom: 110%; transform: translateX(80px); opacity: 0; } }
+
+        header { display: flex; justify-content: center; padding: 30px; }
+        .logo-img { width: 220px; filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4)); transition: transform 0.3s; }
+        .logo-img:hover { transform: scale(1.05) rotate(-2deg); }
+
+        .hero { text-align: center; padding: 20px; margin-top: -20px; }
+        .hero h1 { font-size: 2.5em; font-weight: 900; margin: 0; color: #FFD700; text-shadow: 2px 2px 0px #000; }
+        .hero p { font-size: 1.2em; color: #ccc; max-width: 600px; margin: 20px auto; font-weight: 300; }
+
+        .features { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 30px; max-width: 900px; margin: 0 auto; }
+        .feature-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,215,0,0.2); padding: 25px; border-radius: 20px; width: 250px; backdrop-filter: blur(10px); transition: transform 0.2s; }
+        .feature-card:hover { transform: translateY(-5px); border-color: #FFD700; }
+        .feature-card h3 { color: #FFD700; margin-top: 0; }
+        .feature-card p { font-size: 0.9em; color: #aaa; }
+
+        .cta-container { text-align: center; padding: 50px 20px; }
+        .cta-button { background: linear-gradient(45deg, #FFD700, #FFA500); color: #000; border: none; padding: 18px 50px; font-size: 1.5em; font-weight: 900; border-radius: 50px; cursor: pointer; box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); text-decoration: none; display: inline-block; transition: all 0.3s; }
+        .cta-button:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(255, 215, 0, 0.6); }
+        .subtext { color: #666; font-size: 0.8em; margin-top: 15px; }
+
+        footer { text-align: center; padding: 30px; color: #444; border-top: 1px solid #222; }
+    </style>
+</head>
+<body>
+    <!-- Burbujas de cerveza de fondo -->
+    <div class="bg-bubbles">
+        <div class="bubble" style="left:10%; width:40px; height:40px; animation-delay:0s;"></div>
+        <div class="bubble" style="left:30%; width:20px; height:20px; animation-delay:2s;"></div>
+        <div class="bubble" style="left:50%; width:50px; height:50px; animation-delay:4s;"></div>
+        <div class="bubble" style="left:70%; width:30px; height:30px; animation-delay:1s;"></div>
+        <div class="bubble" style="left:90%; width:25px; height:25px; animation-delay:3s;"></div>
+    </div>
+
+    <header>
+        <img src="logo.png" alt="GasT1a Logo" class="logo-img">
+    </header>
+
+    <div class="hero">
+        <h1>¡Brinda con el parche!</h1>
+        <p>Usa la cámara de tu celular para contar las cervezas y postres que compartes. Sin registros engorrosos, solo diversión P2P.</p>
+    </div>
+
+    <div class="features">
+        <div class="feature-card">
+            <h3>📸 Cámara IA</h3>
+            <p>Apunta y cuenta. Nuestra IA detecta las cervezas en la mesa por ti.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🍻 Parche Conectado</h3>
+            <p>Conecta P2P con tus amigos y ve el contador en tiempo real.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🏪 Modo Bar</h3>
+            <p>Si eres establecimiento, solo sube tu fachada y ubícate. ¡Listo!</p>
+        </div>
+    </div>
+
+    <div class="cta-container">
+        <!-- AQUÍ PONES TU ENLACE DE PAYPAL -->
+        <a href="https://www.paypal.me/TU_ENLACE" class="cta-button" target="_blank">Acceder - $4.99 USD</a>
+        <p class="subtext">Al pagar, serás redirigido a la app instalable.</p>
+    </div>
+
+    <footer>© 2024 GasT1a. Hecho con 🍻 en Colombia.</footer>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GasT1a App</title>
+    <link rel="manifest" href="manifest.json">
+    <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #0a0a0a; color: #fff; margin: 0; padding: 20px; text-align: center; }
+        .card { background: #1a1a1a; padding: 25px; border-radius: 20px; max-width: 400px; margin: 0 auto 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid #333; }
+        input, button, select { width: 90%; padding: 12px; margin: 8px 0; border-radius: 30px; border: 1px solid #444; font-size: 16px; font-family: inherit; }
+        input { background: #111; color: #fff; text-align: center; }
+        button { background: #FFD700; color: #000; font-weight: 800; cursor: pointer; border: none; transition: transform 0.2s; }
+        button:active { transform: scale(0.95); }
+        .avatar-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #FFD700; margin: 10px auto; display: block; }
+        .caricature-filter { filter: contrast(1.6) saturate(2.5) brightness(1.1); }
+        .facade-img { width: 100%; height: 150px; object-fit: cover; border-radius: 15px; border: 2px solid #FFD700; margin: 10px 0; }
+        .counter-box { font-size: 4em; color: #FFD700; font-weight: 900; margin: 10px 0; text-shadow: 0 0 20px rgba(255,215,0,0.5); }
+        video { width: 100%; border-radius: 15px; margin: 10px 0; }
+        .hidden { display: none; }
+        h2 { color: #FFD700; }
+    </style>
+</head>
+<body>
+
+    <!-- SECCIÓN 1: SELECCIÓN DE ROL -->
+    <div id="roleSelector" class="card">
+        <img src="logo.png" width="100" alt="Logo">
+        <h2>¿Quién eres?</h2>
+        <button onclick="showRegistration('persona')">Persona (Parche) 🍻</button>
+        <button onclick="showRegistration('bar')" style="background: #808080; color: #fff;">Bar / Restaurante 🏪</button>
+    </div>
+
+    <!-- SECCIÓN 2A: REGISTRO PERSONA -->
+    <div id="regPersona" class="card hidden">
+        <h2>Crea tu Avatar</h2>
+        <input type="text" id="aliasInput" placeholder="Tu alias (Ej: El Loco)">
+        <p>Tómate una foto:</p>
+        <video id="selfieCam" autoplay playsinline muted width="200" style="border-radius:50%;"></video>
+        <br>
+        <button onclick="takeSelfie()">¡Decir Queso! 📸</button>
+        <canvas id="selfieCanvas" class="hidden"></canvas>
+        <img id="avatarPreview" class="avatar-img caricature-filter hidden" alt="Avatar">
+        <br>
+        <input type="text" id="peerIdInput" placeholder="ID del parche o del Bar">
+        <button onclick="startApp('persona')">¡A Brindar! 🚀</button>
+    </div>
+
+    <!-- SECCIÓN 2B: REGISTRO BAR -->
+    <div id="regBar" class="card hidden">
+        <h2>Registro Establecimiento</h2>
+        <input type="text" id="barNameInput" placeholder="Nombre del Bar">
+        <label style="font-size:0.9em; color:#aaa;">Foto de la fachada:</label>
+        <input type="file" id="facadeInput" accept="image/*">
+        <img id="facadePreview" class="facade-img hidden" alt="Fachada">
+        <button onclick="getLocation()">📍 Obtener Ubicación</button>
+        <p id="locationStatus" style="color:#aaa; font-size:0.8em;"></p>
+        <button onclick="startApp('bar')">Abrir Sala 🍻</button>
+    </div>
+
+    <!-- SECCIÓN 3: LA APP (CONTEO Y CÁMARA) -->
+    <div id="appContainer" class="card hidden">
+        <h2 id="welcomeMsg">¡Salud!</h2>
+        <div id="avatarContainer"></div>
+        <p>Tu Sala ID: <strong id="myRoomId" style="color:#FFD700;"></strong></p>
+        
+        <div class="counter-box" id="counterDisplay">0</div>
+        <p>Cervezas / Productos en la mesa</p>
+
+        <video id="detectorCam" autoplay playsinline muted></video>
+        <p id="aiStatus" style="color:#aaa; font-size:0.8em;">Cargando Inteligencia Artificial...</p>
+        
+        <button onclick="manualAdd()" style="font-size:1.2em; margin-top:15px;">Sumar Manualmente +1</button>
+    </div>
+
+    <script>
+        let peer = null;
+        let connections = []; // El bar puede tener muchos, la persona 1
+        let myRole = '';
+        let myData = {};
+        let productCount = 0;
+        let model = null;
+        let barLocation = null;
+
+        // --- LÓGICA DE REGISTRO ---
+
+        function showRegistration(role) {
+            document.getElementById('roleSelector').classList.add('hidden');
+            if(role === 'persona') {
+                document.getElementById('regPersona').classList.remove('hidden');
+                setupSelfieCam();
+            } else {
+                document.getElementById('regBar').classList.remove('hidden');
+                setupFacadePreview();
+            }
+        }
+
+        // Persona: Cámara Selfie
+        async function setupSelfieCam() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+                document.getElementById('selfieCam').srcObject = stream;
+            } catch(e) { alert("Activa la cámara para el avatar"); }
+        }
+
+        function takeSelfie() {
+            const video = document.getElementById('selfieCam');
+            const canvas = document.getElementById('selfieCanvas');
+            canvas.width = 200; canvas.height = 200;
+            const ctx = canvas.getContext('2d');
+            ctx.translate(canvas.width, 0); ctx.scale(-1, 1); // Espejo
+            ctx.drawImage(video, 0, 0, 200, 200);
+            
+            myData.avatar = canvas.toDataURL('image/jpeg');
+            document.getElementById('avatarPreview').src = myData.avatar;
+            document.getElementById('avatarPreview').classList.remove('hidden');
+            video.srcObject.getTracks().forEach(t => t.stop()); // Apagar cámara
+        }
+
+        // Bar: Fachada y Ubicación
+        function setupFacadePreview() {
+            document.getElementById('facadeInput').onchange = (e) => {
+                const file = e.target.files[0];
+                if(file) {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                        myData.facade = ev.target.result;
+                        document.getElementById('facadePreview').src = myData.facade;
+                        document.getElementById('facadePreview').classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                document.getElementById('locationStatus').innerText = "Obteniendo GPS...";
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    barLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                    document.getElementById('locationStatus').innerText = "✅ Ubicación lista";
+                    myData.location = barLocation;
+                }, () => {
+                    document.getElementById('locationStatus').innerText = "❌ Error al obtener GPS";
+                });
+            }
+        }
+
+        // --- INICIO DE APP Y P2P ---
+
+        function startApp(role) {
+            myRole = role;
+            if(role === 'persona') {
+                myData.alias = document.getElementById('aliasInput').value || 'Anónimo';
+                const targetId = document.getElementById('peerIdInput').value;
+                if(!myData.avatar) return alert("Tómate la foto primero");
+                if(!targetId) return alert("Pon el ID del parche");
+                setupPeer(false, targetId);
+            } else {
+                myData.name = document.getElementById('barNameInput').value || 'Bar Sin Nombre';
+                if(!myData.facade) return alert("Sube la foto de la fachada");
+                setupPeer(true);
+            }
+        }
+
+        function setupPeer(isHost, targetId) {
+            const id = isHost ? 'GAST1A-' + Math.random().toString(36).substr(2, 4).toUpperCase() : undefined;
+            peer = new Peer(id);
+
+            peer.on('open', (myId) => {
+                document.getElementById('myRoomId').innerText = myId;
+                
+                if(isHost) {
+                    // El bar espera conexiones
+                    peer.on('connection', (conn) => {
+                        connections.push(conn);
+                        conn.on('data', (data) => {
+                            if(data.type === 'update') renderParche(data);
+                        });
+                    });
+                } else {
+                    // La persona se conecta al bar/parche
+                    const conn = peer.connect(targetId);
+                    connections.push(conn);
+                    conn.on('open', () => {
+                        conn.send({ type: 'update', alias: myData.alias, avatar: myData.avatar, count: 0 });
+                    });
+                }
+
+                showAppUI();
+            });
+        }
+
+        function showAppUI() {
+            document.querySelectorAll('.card').forEach(el => el.classList.add('hidden'));
+            document.getElementById('appContainer').classList.remove('hidden');
+            
+            const name = myRole === 'bar' ? myData.name : myData.alias;
+            document.getElementById('welcomeMsg').innerText = `¡Salud, ${name}!`;
+            
+            if(myRole === 'persona') {
+                document.getElementById('avatarContainer').innerHTML = `<img src="${myData.avatar}" class="avatar-img caricature-filter">`;
+            } else {
+                document.getElementById('avatarContainer').innerHTML = `<img src="${myData.facade}" class="facade-img">`;
+            }
+
+            setupDetectorCam();
+        }
+
+        function renderParche(data) {
+            // En una app completa, aquí renderizarías la lista de amigos conectados
+            document.getElementById('counterDisplay').innerText = data.count;
+            if(navigator.vibrate) navigator.vibrate(100);
+        }
+
+        // --- CONTEO CON CÁMARA (IA) ---
+
+        async function setupDetectorCam() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                const video = document.getElementById('detectorCam');
+                video.srcObject = stream;
+                await new Promise(r => video.onloadedmetadata = r);
+                loadAI(video);
+            } catch(e) { console.error("Sin cámara trasera", e); }
+        }
+
+        async function loadAI(video) {
+            document.getElementById('aiStatus').innerText = "Cargando IA para detectar...";
+            model = await cocoSsd.load();
+            document.getElementById('aiStatus').innerText = "IA Lista. Apunta a la mesa 🍻";
+            detectLoop(video);
+        }
+
+        let lastBottleTime = 0;
+        async function detectLoop(video) {
+            if(!model) return;
+            const predictions = await model.detect(video);
+            
+            // Detectar botellas o tazas (cervezas/postres)
+            const found = predictions.find(p => (p.class === 'bottle' || p.class === 'cup' || p.class === 'wine glass') && p.score > 0.5);
+            
+            if(found) {
+                const now = Date.now();
+                // Evitar conteo múltiple rápido (cooldown de 3 segundos)
+                if(now - lastBottleTime > 3000) {
+                    lastBottleTime = now;
+                    addProduct();
+                }
+                document.getElementById('aiStatus').innerText = `¡Detectado: ${found.class}! Sumando...`;
+            } else {
+                document.getElementById('aiStatus').innerText = "Apunta la cámara a la mesa 🍻";
+            }
+            requestAnimationFrame(() => detectLoop(video));
+        }
+
+        function addProduct() {
+            productCount++;
+            updateCounters();
+        }
+
+        function manualAdd() {
+            productCount++;
+            updateCounters();
+        }
+
+        function updateCounters() {
+            document.getElementById('counterDisplay').innerText = productCount;
+            if(navigator.vibrate) navigator.vibrate(100);
+            // Avisar al parche
+            connections.forEach(conn => {
+                if(conn.open) {
+                    conn.send({ type: 'update', alias: myData.alias || myData.name, count: productCount });
+                }
+            });
+        }
+
+        // Service Worker
+        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }
+    </script>
+</body>
+</html>
