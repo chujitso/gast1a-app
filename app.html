@@ -24,42 +24,29 @@
         .btn-gold:active { transform: scale(0.95); }
         .btn-silver { background: linear-gradient(45deg, #888, #aaa); color: #000; border: none; padding: 12px 25px; border-radius: 50px; font-weight: 800; font-size: 1em; cursor: pointer; width: 40%; }
         .btn-dark { background: rgba(255,255,255,0.1); border: 1px solid #555; color: #fff; padding: 12px 15px; border-radius: 50px; cursor: pointer; width: 45%; font-weight: 600; font-size: 1.1em; }
+        .btn-exit { background: transparent; border: 1px solid #555; color: #888; padding: 10px 20px; border-radius: 30px; cursor: pointer; width: 60%; margin-top: 25px; font-weight: 600; font-size: 0.9em; display: inline-block; }
 
-        /* Selfie natural: Quitamos el filtro de caricatura */
         .avatar-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #FFD700; margin: 15px auto; display: block; box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
         .facade-img { width: 100%; height: 150px; object-fit: cover; border-radius: 15px; border: 2px solid #FFD700; margin: 10px 0; }
 
         .counter-box { font-size: 4.5em; color: #FFD700; font-weight: 900; margin: 10px 0; text-shadow: 0 0 30px rgba(255,215,0,0.5); line-height: 1; }
         video { width: 100%; border-radius: 20px; margin: 15px 0; border: 2px solid rgba(255,215,0,0.3); }
         
-        /* REGISTRO VISUAL DE CERVEZAS */
         .beer-wall { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin: 10px 0 20px; min-height: 40px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 15px; border: 1px dashed #333; }
         .beer-icon { font-size: 1.8em; animation: popIn 0.3s ease-out; }
         @keyframes popIn { 0% { transform: scale(0); } 80% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
-        /* MODAL DE RETIRO */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; display: flex; justify-content: center; align-items: center; }
         .modal-card { background: #1a1a1a; border: 2px solid #FFD700; border-radius: 30px; padding: 30px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 0 50px rgba(255, 215, 0, 0.2); }
         .checkout-visual { display: flex; justify-content: center; align-items: center; gap: 15px; margin: 20px 0; }
         .checkout-number { font-size: 5em; font-weight: 900; color: #FFD700; text-shadow: 0 0 20px rgba(255,215,0,0.5); line-height: 1; }
         .checkout-beer { font-size: 4em; }
 
-        /* BOTÓN EXIT NEÓN */
         .exit-door-container { margin-top: 40px; display: flex; flex-direction: column; align-items: center; }
-        .exit-door-btn { 
-            width: 100px; height: 140px; background: #222; border: 4px solid #444; 
-            border-radius: 10px 10px 0 0; position: relative; cursor: pointer; 
-            display: flex; justify-content: center; align-items: center; transition: all 0.3s;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
-        }
+        .exit-door-btn { width: 100px; height: 140px; background: #222; border: 4px solid #444; border-radius: 10px 10px 0 0; position: relative; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.3s; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
         .exit-door-btn:hover { border-color: #ff003c; }
         .door-knob { width: 10px; height: 10px; background: #888; border-radius: 50%; position: absolute; right: 15px; }
-        .neon-sign { 
-            font-family: 'Arial', sans-serif; font-weight: 900; font-size: 1.8em; color: #fff; 
-            margin-bottom: 10px; letter-spacing: 3px;
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff003c, 0 0 30px #ff003c, 0 0 40px #ff003c, 0 0 55px #ff003c;
-            animation: flicker 1.5s infinite alternate;
-        }
+        .neon-sign { font-family: 'Arial', sans-serif; font-weight: 900; font-size: 1.8em; color: #fff; margin-bottom: 10px; letter-spacing: 3px; text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff003c, 0 0 30px #ff003c, 0 0 40px #ff003c, 0 0 55px #ff003c; animation: flicker 1.5s infinite alternate; }
         @keyframes flicker { 0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; } }
 
         .clients-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px; }
@@ -73,6 +60,8 @@
         .hidden { display: none; }
         h2 { color: #FFD700; font-weight: 900; text-shadow: 1px 1px 0px #000; margin-top: 0; }
         h3 { color: #fff; border-top: 1px solid #333; padding-top: 15px; }
+        
+        .photo-status { color: #4CAF50; font-weight: 800; margin: 10px 0; font-size: 1.1em; }
     </style>
 </head>
 <body>
@@ -108,16 +97,25 @@
     <div id="regPersona" class="card hidden">
         <h2>Crea tu Avatar</h2>
         <input type="text" id="aliasInput" placeholder="Tu alias (Ej: El Loco)">
-        <p style="font-size:0.9em; color:#aaa;">Tómate una foto (Natural y Nítida):</p>
-        <video id="selfieCam" autoplay playsinline muted width="200" style="border-radius:50%; border: 3px solid #FFD700;"></video>
-        <br>
-        <button class="btn-gold" onclick="takeSelfie()">¡Decir Queso! 📸</button>
+        
+        <div id="selfieArea">
+            <p style="font-size:0.9em; color:#aaa;">Tómate una foto:</p>
+            <video id="selfieCam" autoplay playsinline muted width="200" style="border-radius:50%; border: 3px solid #FFD700;"></video>
+            <br>
+            <button id="selfieBtn" class="btn-gold" onclick="takeSelfie()">¡Decir Queso! 📸</button>
+        </div>
+        
+        <div id="selfieResult" class="hidden">
+            <p class="photo-status">¡Foto Guardada! ✅</p>
+            <img id="avatarPreview" class="avatar-img" alt="Avatar">
+            <button class="btn-dark" onclick="retakeSelfie()" style="margin-top: 0; width: 60%;">Tomar otra</button>
+        </div>
+        
         <canvas id="selfieCanvas" class="hidden"></canvas>
-        <img id="avatarPreview" class="avatar-img hidden" alt="Avatar">
         <br>
         <input type="text" id="peerIdInput" placeholder="Código de la Mesa / Bar">
         <button class="btn-gold" onclick="startApp('persona')">¡Unirme al Parche! 🚀</button>
-        <button class="btn-exit" onclick="resetApp()">← Volver</button>
+        <button class="btn-exit" onclick="resetApp()">← Volver al inicio</button>
     </div>
 
     <!-- SECCIÓN 2B: REGISTRO BAR -->
@@ -130,7 +128,7 @@
         <button class="btn-gold" onclick="getLocation()">📍 Obtener Ubicación</button>
         <p id="locationStatus" style="color:#aaa; font-size:0.8em;"></p>
         <button class="btn-gold" onclick="startApp('bar')">Abrir Mesa 🍻</button>
-        <button class="btn-exit" onclick="resetApp()">← Volver</button>
+        <button class="btn-exit" onclick="resetApp()">← Volver al inicio</button>
     </div>
 
     <!-- SECCIÓN 3: LA APP PERSONA -->
@@ -212,16 +210,26 @@
 
         function takeSelfie() {
             const video = document.getElementById('selfieCam'); const canvas = document.getElementById('selfieCanvas');
-            // Alta resolución
             canvas.width = 400; canvas.height = 400; 
             const ctx = canvas.getContext('2d');
-            // Efecto espejo para que se vea natural al tomarla
             ctx.translate(canvas.width, 0); ctx.scale(-1, 1);
             ctx.drawImage(video, 0, 0, 400, 400);
             myData.avatar = canvas.toDataURL('image/jpeg', 0.9);
-            document.getElementById('avatarPreview').src = myData.avatar; document.getElementById('avatarPreview').classList.remove('hidden');
+            
+            // Cambiar UI para mostrar la foto y ocultar el video
+            document.getElementById('avatarPreview').src = myData.avatar;
+            document.getElementById('selfieArea').classList.add('hidden');
+            document.getElementById('selfieResult').classList.remove('hidden');
+            
             // Apagar cámara frontal para ahorrar batería
-            video.srcObject.getTracks().forEach(t => t.stop());
+            if(video.srcObject) video.srcObject.getTracks().forEach(t => t.stop());
+        }
+
+        function retakeSelfie() {
+            myData.avatar = null;
+            document.getElementById('selfieResult').classList.add('hidden');
+            document.getElementById('selfieArea').classList.remove('hidden');
+            setupSelfieCam(); // Volver a prender la cámara
         }
 
         function setupFacadePreview() {
@@ -244,7 +252,9 @@
         }
 
         function setupPeer(isHost, targetId) {
-            const id = isHost ? 'GAST1A-' + Math.random().toString(36).substr(2, 4).toUpperCase() : undefined; peer = new Peer(id);
+            const id = isHost ? 'GAST1A-' + Math.random().toString(36).substr(2, 4).toUpperCase() : undefined; 
+            peer = new Peer(id);
+            
             peer.on('open', (myId) => {
                 if(isHost) {
                     document.getElementById('myRoomId').innerText = myId;
@@ -252,37 +262,40 @@
                         connections.push(conn);
                         conn.on('data', (data) => {
                             if(data.type === 'register') {
-                                // LÓGICA DE ALIAS ÚNICO: El Bar verifica si el alias ya existe
-                                let finalAlias = data.alias;
-                                let counter = 1;
-                                while(checkAliasExists(finalAlias)) {
-                                    counter++;
-                                    finalAlias = `${data.alias} ${counter}`;
-                                }
-                                // Guardar con el alias final
+                                let finalAlias = data.alias; let counter = 1;
+                                while(checkAliasExists(finalAlias)) { counter++; finalAlias = `${data.alias} ${counter}`; }
                                 activeClients[conn.peer] = { alias: finalAlias, avatar: data.avatar, count: 0 };
-                                // Avisar al cliente cuál es su alias final
-                                conn.send({ type: 'alias-approved', alias: finalAlias });
+                                conn.send({ type: 'alias-approved', alias: finalAlias }); // Avisar al cliente
                                 renderClients();
-                            } 
-                            else if(data.type === 'update') { if(activeClients[conn.peer]) { activeClients[conn.peer].count = data.count; renderClients(); } } 
+                            } else if(data.type === 'update') { if(activeClients[conn.peer]) { activeClients[conn.peer].count = data.count; renderClients(); } } 
                             else if(data.type === 'checkout') { if(activeClients[conn.peer]) { leftClients[conn.peer] = activeClients[conn.peer]; leftClients[conn.peer].count = data.count; delete activeClients[conn.peer]; renderClients(); } }
                         });
                         conn.on('close', () => { if(activeClients[conn.peer]) { leftClients[conn.peer] = activeClients[conn.peer]; delete activeClients[conn.peer]; renderClients(); } });
                     });
+                    showAppUI(); // El Bar entra directo
                 } else {
+                    // ENTRADA INMEDIATA PARA EL CLIENTE
+                    showAppUI(); // Entro a la app ya!
+                    
                     const conn = peer.connect(targetId); connections.push(conn);
                     conn.on('open', () => { conn.send({ type: 'register', alias: myData.alias, avatar: myData.avatar }); });
                     conn.on('data', (data) => {
                         if(data.type === 'alias-approved') {
-                            myData.alias = data.alias; // Actualizo mi alias si el Bar lo modificó
+                            myData.alias = data.alias; // Si el Bar me cambió el alias, lo actualizo
                             document.getElementById('welcomeMsgPersona').innerText = `¡Salud, ${myData.alias}!`;
-                            showAppUI(); // Muestro la app solo cuando el Bar me aprueba
                         }
                         else if(data.type === 'sync-request') { conn.send({ type: 'update', alias: myData.alias, avatar: myData.avatar, count: myCount }); }
                     });
                 }
-                if(isHost) showAppUI(); // El Bar entra directo
+            });
+
+            // Manejar errores de conexión (ej. ID incorrecto)
+            peer.on('error', (err) => {
+                console.error(err);
+                if(err.type === 'peer-unavailable') {
+                    alert("Mesa no encontrada. Revisa el código.");
+                    resetApp();
+                }
             });
         }
 
@@ -342,24 +355,29 @@
         function closeModal() { document.getElementById('checkoutModal').classList.add('hidden'); }
 
         function confirmLeave() {
-            // 1. Enviar mensaje al Bar
             connections.forEach(c => { if(c.open) c.send({ type: 'checkout', alias: myData.alias, avatar: myData.avatar, count: myCount }); });
             closeModal();
-            // 2. Darle 1 segundo al mensaje para viajar por internet antes de destruir la conexión
-            setTimeout(() => {
-                resetApp();
-            }, 1000);
+            setTimeout(() => { resetApp(); }, 1000);
         }
 
         function resetApp() {
-            try { if (peer) { connections.forEach(c => c.close()); peer.destroy(); peer = null; } } catch(e) { console.error(e); }
-            try { Object.values(cameraStreams).forEach(stream => { if(stream) stream.getTracks().forEach(t => t.stop()); }); } catch(e) { console.error(e); }
+            try { if (peer) { connections.forEach(c => c.close()); peer.destroy(); peer = null; } } catch(e) {}
+            try { 
+                // Apagar todas las cámaras abiertas
+                Object.values(cameraStreams).forEach(stream => { if(stream) stream.getTracks().forEach(t => t.stop()); }); 
+                if(document.getElementById('selfieCam').srcObject) document.getElementById('selfieCam').srcObject.getTracks().forEach(t => t.stop());
+            } catch(e) {}
             
             myCount = 0; connections = []; activeClients = {}; leftClients = {}; isScanning = { persona: true, bar: true };
+            myData = {}; // Borrar alias y avatar
             
-            // Limpiar interfaz visual
+            // Resetear UI visual
             document.getElementById('beerWallPersona').innerHTML = '';
             document.getElementById('counterDisplayPersona').innerText = '0';
+            document.getElementById('selfieResult').classList.add('hidden');
+            document.getElementById('selfieArea').classList.remove('hidden');
+            document.getElementById('aliasInput').value = '';
+            document.getElementById('peerIdInput').value = '';
             
             document.querySelectorAll('.card').forEach(el => el.classList.add('hidden'));
             document.getElementById('roleSelector').classList.remove('hidden');

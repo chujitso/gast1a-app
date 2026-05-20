@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gast1a-v7'; // <-- CAMBIAMOS ESTE NÚMERO/VERSIÓN
+const CACHE_NAME = 'gast1a-v8'; // <-- CAMBIAMOS ESTE NÚMERO/VERSIÓN
 const urlsToCache = [
   '/',
   '/index.html',
