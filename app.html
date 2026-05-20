@@ -18,26 +18,49 @@
 
         .card { background: rgba(30, 30, 30, 0.9); backdrop-filter: blur(10px); padding: 25px; border-radius: 25px; max-width: 420px; margin: 0 auto 20px; border: 1px solid rgba(255, 215, 0, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        input, select { width: 85%; padding: 15px; margin: 8px 0; border-radius: 30px; border: 1px solid #444; font-size: 16px; font-family: inherit; background: #111; color: #fff; text-align: center; outline: none; }
+        input { width: 85%; padding: 15px; margin: 8px 0; border-radius: 30px; border: 1px solid #444; font-size: 16px; font-family: inherit; background: #111; color: #fff; text-align: center; outline: none; }
         
         .btn-gold { background: linear-gradient(45deg, #FFD700, #FFA500); color: #000; border: none; padding: 16px 30px; border-radius: 50px; font-weight: 900; font-size: 1.2em; cursor: pointer; box-shadow: 0 0 25px rgba(255, 215, 0, 0.3); width: 85%; transition: transform 0.2s; display: block; margin: 15px auto; }
         .btn-gold:active { transform: scale(0.95); }
-        
         .btn-silver { background: linear-gradient(45deg, #888, #aaa); color: #000; border: none; padding: 12px 25px; border-radius: 50px; font-weight: 800; font-size: 1em; cursor: pointer; width: 40%; }
-        
         .btn-dark { background: rgba(255,255,255,0.1); border: 1px solid #555; color: #fff; padding: 12px 15px; border-radius: 50px; cursor: pointer; width: 45%; font-weight: 600; font-size: 1.1em; }
 
-        .btn-exit { background: transparent; border: 1px solid #555; color: #888; padding: 10px 20px; border-radius: 30px; cursor: pointer; width: 60%; margin-top: 25px; font-weight: 600; font-size: 0.9em; }
-        .btn-exit:hover { border-color: #ff5050; color: #ff5050; }
-
-        .avatar-img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 4px solid #FFD700; margin: 15px auto; display: block; box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
-        .caricature-filter { filter: contrast(1.6) saturate(2.5) brightness(1.1); }
+        .avatar-img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 4px solid #FFD700; margin: 15px auto; display: block; box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); filter: contrast(1.6) saturate(2.5) brightness(1.1); }
         .facade-img { width: 100%; height: 150px; object-fit: cover; border-radius: 15px; border: 2px solid #FFD700; margin: 10px 0; }
 
         .counter-box { font-size: 4.5em; color: #FFD700; font-weight: 900; margin: 10px 0; text-shadow: 0 0 30px rgba(255,215,0,0.5); line-height: 1; }
-        .counter-label { margin-top:0; color:#aaa; font-size: 0.9em; text-transform: uppercase; letter-spacing: 2px; }
         video { width: 100%; border-radius: 20px; margin: 15px 0; border: 2px solid rgba(255,215,0,0.3); }
         
+        /* REGISTRO VISUAL DE CERVEZAS */
+        .beer-wall { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin: 10px 0 20px; min-height: 40px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 15px; border: 1px dashed #333; }
+        .beer-icon { font-size: 1.8em; animation: popIn 0.3s ease-out; }
+        @keyframes popIn { 0% { transform: scale(0); } 80% { transform: scale(1.2); } 100% { transform: scale(1); } }
+
+        /* MODAL DE RETIRO */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; display: flex; justify-content: center; align-items: center; }
+        .modal-card { background: #1a1a1a; border: 2px solid #FFD700; border-radius: 30px; padding: 30px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 0 50px rgba(255, 215, 0, 0.2); }
+        .checkout-visual { display: flex; justify-content: center; align-items: center; gap: 15px; margin: 20px 0; }
+        .checkout-number { font-size: 5em; font-weight: 900; color: #FFD700; text-shadow: 0 0 20px rgba(255,215,0,0.5); line-height: 1; }
+        .checkout-beer { font-size: 4em; }
+
+        /* BOTÓN EXIT NEÓN */
+        .exit-door-container { margin-top: 40px; display: flex; flex-direction: column; align-items: center; }
+        .exit-door-btn { 
+            width: 100px; height: 140px; background: #222; border: 4px solid #444; 
+            border-radius: 10px 10px 0 0; position: relative; cursor: pointer; 
+            display: flex; justify-content: center; align-items: center; transition: all 0.3s;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+        .exit-door-btn:hover { border-color: #ff003c; }
+        .door-knob { width: 10px; height: 10px; background: #888; border-radius: 50%; position: absolute; right: 15px; }
+        .neon-sign { 
+            font-family: 'Arial', sans-serif; font-weight: 900; font-size: 1.8em; color: #fff; 
+            margin-bottom: 10px; letter-spacing: 3px;
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff003c, 0 0 30px #ff003c, 0 0 40px #ff003c, 0 0 55px #ff003c;
+            animation: flicker 1.5s infinite alternate;
+        }
+        @keyframes flicker { 0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; } }
+
         .clients-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px; }
         .client-card { background: rgba(0,0,0,0.5); border: 1px solid #FFD700; padding: 10px; border-radius: 15px; width: 90px; text-align: center; }
         .client-card.left { opacity: 0.4; border-color: #555; }
@@ -58,6 +81,20 @@
         <div class="bubble" style="left:70%; width:50px; height:50px; animation-delay:4s;"></div>
     </div>
 
+    <!-- MODAL DE RETIRO (Oculto por defecto) -->
+    <div id="checkoutModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <h2>¿Te vas tan pronto?</h2>
+            <p style="color:#aaa;">Te bebiste tú solo:</p>
+            <div class="checkout-visual">
+                <span id="checkoutCount" class="checkout-number">0</span>
+                <span class="checkout-beer">🍻</span>
+            </div>
+            <button class="btn-gold" onclick="closeModal()">Seguir en el Parche 🍻</button>
+            <button class="btn-silver" onclick="confirmLeave()" style="margin-top:15px; width:80%; background:#ff5050; color:#fff;">Sí, me voy 🚪</button>
+        </div>
+    </div>
+
     <!-- SECCIÓN 1: SELECCIÓN DE ROL -->
     <div id="roleSelector" class="card">
         <img src="logo.png" width="120" alt="Logo" style="filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));">
@@ -75,7 +112,7 @@
         <br>
         <button class="btn-gold" onclick="takeSelfie()">¡Decir Queso! 📸</button>
         <canvas id="selfieCanvas" class="hidden"></canvas>
-        <img id="avatarPreview" class="avatar-img caricature-filter hidden" alt="Avatar">
+        <img id="avatarPreview" class="avatar-img hidden" alt="Avatar">
         <br>
         <input type="text" id="peerIdInput" placeholder="Código de la Mesa / Bar">
         <button class="btn-gold" onclick="startApp('persona')">¡Unirme al Parche! 🚀</button>
@@ -99,20 +136,27 @@
     <div id="appPersonaUI" class="card hidden">
         <h2 id="welcomeMsgPersona">¡Salud!</h2>
         <div id="avatarContainerPersona"></div>
-        <p class="counter-label">Mi Cuenta</p>
         <div class="counter-box" id="counterDisplayPersona">0</div>
         
+        <!-- Muro visual de cervezas -->
+        <div id="beerWallPersona" class="beer-wall"></div>
+
         <video id="detectorCamPersona" autoplay playsinline muted></video>
         <p id="aiStatusPersona" style="color:#aaa; font-size:0.9em; font-weight:600; min-height: 25px;"></p>
         
         <button class="btn-gold" onclick="scanAndAdd('persona')">Escanear y Sumar 🍻</button>
-        
         <div style="display:flex; justify-content:center; gap:10px; margin-bottom: 10px;">
             <button class="btn-dark" onclick="manualAdd('persona')">+1 Manual</button>
             <button class="btn-dark" id="camToggleBtnPersona" onclick="toggleCamera('persona')">Pausar ⏸️</button>
         </div>
 
-        <button class="btn-exit" onclick="leaveParche()">🚪 Me voy del Parche</button>
+        <!-- BOTÓN EXIT NEÓN -->
+        <div class="exit-door-container">
+            <div class="neon-sign">EXIT</div>
+            <div class="exit-door-btn" onclick="leaveParche()">
+                <div class="door-knob"></div>
+            </div>
+        </div>
     </div>
 
     <!-- SECCIÓN 4: LA APP BAR -->
@@ -123,8 +167,8 @@
             <h1 id="myRoomId" style="margin:5px 0; color:#FFD700; letter-spacing:3px;">CARGANDO</h1>
         </div>
 
-        <p class="counter-label">Total del Parche (Activos)</p>
-        <div class="counter-box" id="counterDisplayBarTotal">0</div>
+        <p style="margin-top:0; color:#aaa; font-size: 0.9em;">Total del Parche (Activos)</p>
+        <div class="counter-box" id="counterDisplayBarTotal" style="font-size: 3.5em;">0</div>
 
         <video id="detectorCamBar" autoplay playsinline muted style="height: 120px; object-fit: cover;"></video>
         <p id="aiStatusBar" style="color:#aaa; font-size:0.9em; font-weight:600; min-height: 25px;"></p>
@@ -155,126 +199,64 @@
         let cameraStreams = { persona: null, bar: null };
         let isScanning = { persona: true, bar: true };
         let visibleItems = 0;
-        
-        // Base de datos local del Bar
         const activeClients = {}; 
         const leftClients = {}; 
 
         function showRegistration(role) {
             document.getElementById('roleSelector').classList.add('hidden');
-            if(role === 'persona') {
-                document.getElementById('regPersona').classList.remove('hidden');
-                setupSelfieCam();
-            } else {
-                document.getElementById('regBar').classList.remove('hidden');
-                setupFacadePreview();
-            }
+            if(role === 'persona') { document.getElementById('regPersona').classList.remove('hidden'); setupSelfieCam(); } 
+            else { document.getElementById('regBar').classList.remove('hidden'); setupFacadePreview(); }
         }
 
         async function setupSelfieCam() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
-                document.getElementById('selfieCam').srcObject = stream;
-                cameraStreams.persona = stream; 
-            } catch(e) { alert("Activa la cámara para el avatar"); }
+            try { const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } }); document.getElementById('selfieCam').srcObject = stream; cameraStreams.persona = stream; } catch(e) { alert("Activa la cámara para el avatar"); }
         }
 
         function takeSelfie() {
-            const video = document.getElementById('selfieCam');
-            const canvas = document.getElementById('selfieCanvas');
-            canvas.width = 200; canvas.height = 200;
-            const ctx = canvas.getContext('2d');
-            ctx.translate(canvas.width, 0); ctx.scale(-1, 1);
-            ctx.drawImage(video, 0, 0, 200, 200);
+            const video = document.getElementById('selfieCam'); const canvas = document.getElementById('selfieCanvas');
+            canvas.width = 200; canvas.height = 200; const ctx = canvas.getContext('2d');
+            ctx.translate(canvas.width, 0); ctx.scale(-1, 1); ctx.drawImage(video, 0, 0, 200, 200);
             myData.avatar = canvas.toDataURL('image/jpeg');
-            document.getElementById('avatarPreview').src = myData.avatar;
-            document.getElementById('avatarPreview').classList.remove('hidden');
+            document.getElementById('avatarPreview').src = myData.avatar; document.getElementById('avatarPreview').classList.remove('hidden');
             video.srcObject.getTracks().forEach(t => t.stop());
         }
 
         function setupFacadePreview() {
             document.getElementById('facadeInput').onchange = (e) => {
-                const file = e.target.files[0];
-                if(file) {
-                    const reader = new FileReader();
-                    reader.onload = (ev) => {
-                        myData.facade = ev.target.result;
-                        document.getElementById('facadePreview').src = myData.facade;
-                        document.getElementById('facadePreview').classList.remove('hidden');
-                    };
-                    reader.readAsDataURL(file);
-                }
+                const file = e.target.files[0]; if(file) { const reader = new FileReader(); reader.onload = (ev) => { myData.facade = ev.target.result; document.getElementById('facadePreview').src = myData.facade; document.getElementById('facadePreview').classList.remove('hidden'); }; reader.readAsDataURL(file); }
             };
         }
 
         function getLocation() {
-            if (navigator.geolocation) {
-                document.getElementById('locationStatus').innerText = "Obteniendo GPS...";
-                navigator.geolocation.getCurrentPosition((pos) => {
-                    barLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-                    document.getElementById('locationStatus').innerText = "✅ Ubicación lista";
-                    myData.location = barLocation;
-                }, () => { document.getElementById('locationStatus').innerText = "❌ Error al obtener GPS"; });
-            }
+            if (navigator.geolocation) { document.getElementById('locationStatus').innerText = "Obteniendo GPS..."; navigator.geolocation.getCurrentPosition((pos) => { barLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude }; document.getElementById('locationStatus').innerText = "✅ Ubicación lista"; myData.location = barLocation; }, () => { document.getElementById('locationStatus').innerText = "❌ Error al obtener GPS"; }); }
         }
 
         function startApp(role) {
             myRole = role;
             if(role === 'persona') {
-                myData.alias = document.getElementById('aliasInput').value || 'Anónimo';
-                const targetId = document.getElementById('peerIdInput').value.toUpperCase();
-                if(!myData.avatar) return alert("Tómate la foto primero");
-                if(!targetId) return alert("Pon el Código de la Mesa");
+                myData.alias = document.getElementById('aliasInput').value || 'Anónimo'; const targetId = document.getElementById('peerIdInput').value.toUpperCase();
+                if(!myData.avatar) return alert("Tómate la foto primero"); if(!targetId) return alert("Pon el Código de la Mesa");
                 setupPeer(false, targetId);
-            } else {
-                myData.name = document.getElementById('barNameInput').value || 'Bar Sin Nombre';
-                if(!myData.facade) return alert("Sube la foto de la fachada");
-                setupPeer(true);
-            }
+            } else { myData.name = document.getElementById('barNameInput').value || 'Bar Sin Nombre'; if(!myData.facade) return alert("Sube la foto de la fachada"); setupPeer(true); }
         }
 
         function setupPeer(isHost, targetId) {
-            const id = isHost ? 'GAST1A-' + Math.random().toString(36).substr(2, 4).toUpperCase() : undefined;
-            peer = new Peer(id);
-
+            const id = isHost ? 'GAST1A-' + Math.random().toString(36).substr(2, 4).toUpperCase() : undefined; peer = new Peer(id);
             peer.on('open', (myId) => {
                 if(isHost) {
                     document.getElementById('myRoomId').innerText = myId;
                     peer.on('connection', (conn) => {
-                        connections.push(conn);
-                        conn.on('open', () => {
-                            conn.send({ type: 'sync-request' }); // Pedirle al cliente su conteo actual
-                        });
+                        connections.push(conn); conn.on('open', () => { conn.send({ type: 'sync-request' }); });
                         conn.on('data', (data) => {
-                            if(data.type === 'update') {
-                                activeClients[conn.peer] = { alias: data.alias, avatar: data.avatar, count: data.count };
-                                renderClients();
-                            } else if(data.type === 'checkout') {
-                                leftClients[conn.peer] = { alias: data.alias, avatar: data.avatar, count: data.count };
-                                delete activeClients[conn.peer];
-                                renderClients();
-                            }
+                            if(data.type === 'update') { activeClients[conn.peer] = { alias: data.alias, avatar: data.avatar, count: data.count }; renderClients(); } 
+                            else if(data.type === 'checkout') { leftClients[conn.peer] = { alias: data.alias, avatar: data.avatar, count: data.count }; delete activeClients[conn.peer]; renderClients(); }
                         });
-                        conn.on('close', () => {
-                            // Si se desconecta sin avisar (se le fue la señal), lo pasamos a retirados con su último conteo
-                            if(activeClients[conn.peer]) {
-                                leftClients[conn.peer] = activeClients[conn.peer];
-                                delete activeClients[conn.peer];
-                                renderClients();
-                            }
-                        });
+                        conn.on('close', () => { if(activeClients[conn.peer]) { leftClients[conn.peer] = activeClients[conn.peer]; delete activeClients[conn.peer]; renderClients(); } });
                     });
                 } else {
-                    const conn = peer.connect(targetId);
-                    connections.push(conn);
-                    conn.on('open', () => {
-                        conn.send({ type: 'update', alias: myData.alias, avatar: myData.avatar, count: myCount });
-                    });
-                    conn.on('data', (data) => {
-                        if(data.type === 'sync-request') {
-                            conn.send({ type: 'update', alias: myData.alias, avatar: myData.avatar, count: myCount });
-                        }
-                    });
+                    const conn = peer.connect(targetId); connections.push(conn);
+                    conn.on('open', () => { conn.send({ type: 'update', alias: myData.alias, avatar: myData.avatar, count: myCount }); });
+                    conn.on('data', (data) => { if(data.type === 'sync-request') { conn.send({ type: 'update', alias: myData.alias, avatar: myData.avatar, count: myCount }); } });
                 }
                 showAppUI();
             });
@@ -282,161 +264,83 @@
 
         function showAppUI() {
             document.querySelectorAll('.card').forEach(el => el.classList.add('hidden'));
-            if(myRole === 'persona') {
-                document.getElementById('appPersonaUI').classList.remove('hidden');
-                document.getElementById('welcomeMsgPersona').innerText = `¡Salud, ${myData.alias}!`;
-                document.getElementById('avatarContainerPersona').innerHTML = `<img src="${myData.avatar}" class="avatar-img caricature-filter">`;
-                setupDetectorCam('persona');
-            } else {
-                document.getElementById('appBarUI').classList.remove('hidden');
-                document.getElementById('welcomeMsgBar').innerText = myData.name;
-                setupDetectorCam('bar');
-            }
+            if(myRole === 'persona') { document.getElementById('appPersonaUI').classList.remove('hidden'); document.getElementById('welcomeMsgPersona').innerText = `¡Salud, ${myData.alias}!`; document.getElementById('avatarContainerPersona').innerHTML = `<img src="${myData.avatar}" class="avatar-img">`; setupDetectorCam('persona'); } 
+            else { document.getElementById('appBarUI').classList.remove('hidden'); document.getElementById('welcomeMsgBar').innerText = myData.name; setupDetectorCam('bar'); }
         }
 
         function renderClients() {
-            const activeContainer = document.getElementById('clientsContainerActive');
-            const leftContainer = document.getElementById('clientsContainerLeft');
-            activeContainer.innerHTML = '';
-            leftContainer.innerHTML = '';
-            
-            let totalActiveCount = 0;
-
-            for (const id in activeClients) {
-                const client = activeClients[id];
-                totalActiveCount += client.count;
-                activeContainer.innerHTML += `
-                    <div class="client-card">
-                        <img src="${client.avatar}" alt="Avatar">
-                        <p>${client.alias}</p>
-                        <div class="mini-count">🍻 ${client.count}</div>
-                    </div>`;
-            }
-
-            for (const id in leftClients) {
-                const client = leftClients[id];
-                // Opcional: sumar los retirados al total si el bar lo cobra solidario, o mostrarlo aparte.
-                leftContainer.innerHTML += `
-                    <div class="client-card left">
-                        <img src="${client.avatar}" alt="Avatar">
-                        <p>${client.alias}</p>
-                        <div class="mini-count">🍻 ${client.count}</div>
-                    </div>`;
-            }
-
-            // Actualizar el total del parche en la vista del Bar
-            // Sumamos el conteo propio del Bar (si el barman escanea) + el de los clientes activos
+            const activeContainer = document.getElementById('clientsContainerActive'); const leftContainer = document.getElementById('clientsContainerLeft');
+            activeContainer.innerHTML = ''; leftContainer.innerHTML = ''; let totalActiveCount = 0;
+            for (const id in activeClients) { const client = activeClients[id]; totalActiveCount += client.count; activeContainer.innerHTML += `<div class="client-card"><img src="${client.avatar}" alt="Avatar"><p>${client.alias}</p><div class="mini-count">🍻 ${client.count}</div></div>`; }
+            for (const id in leftClients) { const client = leftClients[id]; leftContainer.innerHTML += `<div class="client-card left"><img src="${client.avatar}" alt="Avatar"><p>${client.alias}</p><div class="mini-count">🍻 ${client.count}</div></div>`; }
             document.getElementById('counterDisplayBarTotal').innerText = myCount + totalActiveCount;
         }
 
         async function setupDetectorCam(type) {
-            const videoId = type === 'persona' ? 'detectorCamPersona' : 'detectorCamBar';
-            const statusId = type === 'persona' ? 'aiStatusPersona' : 'aiStatusBar';
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-                const video = document.getElementById(videoId);
-                video.srcObject = stream;
-                cameraStreams[type] = stream;
-                await new Promise(r => video.onloadedmetadata = r);
-                loadAI(video, statusId);
-            } catch(e) { console.error("Sin cámara trasera", e); }
+            const videoId = type === 'persona' ? 'detectorCamPersona' : 'detectorCamBar'; const statusId = type === 'persona' ? 'aiStatusPersona' : 'aiStatusBar';
+            try { const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }); const video = document.getElementById(videoId); video.srcObject = stream; cameraStreams[type] = stream; await new Promise(r => video.onloadedmetadata = r); loadAI(video, statusId); } catch(e) { console.error("Sin cámara", e); }
         }
 
-        async function loadAI(video, statusId) {
-            document.getElementById(statusId).innerText = "Cargando IA...";
-            model = await cocoSsd.load();
-            document.getElementById(statusId).innerText = "IA Lista. Apunta a la mesa 🍻";
-            detectLoop(video, statusId);
-        }
+        async function loadAI(video, statusId) { document.getElementById(statusId).innerText = "Cargando IA..."; model = await cocoSsd.load(); document.getElementById(statusId).innerText = "IA Lista. Apunta a la mesa 🍻"; detectLoop(video, statusId); }
 
         async function detectLoop(video, statusId) {
-            if(!model) return;
-            const currentType = video.id.includes('Persona') ? 'persona' : 'bar';
-            if(!isScanning[currentType]) return;
-            
-            const predictions = await model.detect(video);
-            const relevant = predictions.filter(p => ['bottle', 'cup', 'wine glass'].includes(p.class) && p.score > 0.5);
-            visibleItems = relevant.length;
-            
-            if(visibleItems > 0) {
-                document.getElementById(statusId).innerText = `👀 Veo ${visibleItems} objeto(s). ¡Escanea!`;
-                document.getElementById(statusId).style.color = "#FFD700";
-            } else {
-                document.getElementById(statusId).innerText = "Apunta la cámara a la mesa 🍻";
-                document.getElementById(statusId).style.color = "#aaa";
-            }
+            if(!model) return; const currentType = video.id.includes('Persona') ? 'persona' : 'bar'; if(!isScanning[currentType]) return;
+            const predictions = await model.detect(video); const relevant = predictions.filter(p => ['bottle', 'cup', 'wine glass'].includes(p.class) && p.score > 0.5); visibleItems = relevant.length;
+            if(visibleItems > 0) { document.getElementById(statusId).innerText = `👀 Veo ${visibleItems} objeto(s). ¡Escanea!`; document.getElementById(statusId).style.color = "#FFD700"; } 
+            else { document.getElementById(statusId).innerText = "Apunta la cámara a la mesa 🍻"; document.getElementById(statusId).style.color = "#aaa"; }
             requestAnimationFrame(() => detectLoop(video, statusId));
         }
 
         function scanAndAdd(type) {
-            if (visibleItems > 0) {
-                myCount += visibleItems;
-                updateMyCount(type);
-                if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
-            } else {
-                if(navigator.vibrate) navigator.vibrate(300);
-            }
+            if (visibleItems > 0) { myCount += visibleItems; updateMyCount(type); if(navigator.vibrate) navigator.vibrate([100, 50, 100]); } 
+            else { if(navigator.vibrate) navigator.vibrate(300); }
         }
 
-        function manualAdd(type) {
-            myCount++;
-            updateMyCount(type);
-        }
+        function manualAdd(type) { myCount++; updateMyCount(type); }
 
         function updateMyCount(type) {
             if(type === 'persona') {
                 document.getElementById('counterDisplayPersona').innerText = myCount;
+                updateBeerWall(); // Actualizar muro visual
                 connections.forEach(c => c.open && c.send({ type: 'update', alias: myData.alias, avatar: myData.avatar, count: myCount }));
-            } else {
-                // En el modo Bar, myCount es lo que escanea el barman, se suma al total en renderClients()
-                renderClients(); 
+            } else { renderClients(); }
+        }
+
+        function updateBeerWall() {
+            const wall = document.getElementById('beerWallPersona');
+            wall.innerHTML = ''; // Limpiar muro
+            for(let i = 0; i < myCount; i++) {
+                wall.innerHTML += `<span class="beer-icon">🍻</span>`;
             }
         }
 
         function toggleCamera(type) {
-            const videoId = type === 'persona' ? 'detectorCamPersona' : 'detectorCamBar';
-            const btnId = type === 'persona' ? 'camToggleBtnPersona' : 'camToggleBtnBar';
-            const statusId = type === 'persona' ? 'aiStatusPersona' : 'aiStatusBar';
-            const video = document.getElementById(videoId);
-            const btn = document.getElementById(btnId);
-
-            if (isScanning[type]) {
-                isScanning[type] = false;
-                video.pause();
-                btn.innerText = "▶️";
-                document.getElementById(statusId).innerText = "Cámara en pausa";
-            } else {
-                isScanning[type] = true;
-                video.play();
-                btn.innerText = "⏸️";
-                detectLoop(video, statusId);
-            }
+            const videoId = type === 'persona' ? 'detectorCamPersona' : 'detectorCamBar'; const btnId = type === 'persona' ? 'camToggleBtnPersona' : 'camToggleBtnBar'; const statusId = type === 'persona' ? 'aiStatusPersona' : 'aiStatusBar';
+            const video = document.getElementById(videoId); const btn = document.getElementById(btnId);
+            if (isScanning[type]) { isScanning[type] = false; video.pause(); btn.innerText = "▶️"; document.getElementById(statusId).innerText = "Cámara en pausa"; } 
+            else { isScanning[type] = true; video.play(); btn.innerText = "⏸️"; detectLoop(video, statusId); }
         }
 
-        // Función cuando un usuario se retira del parche conscientemente
+        // --- LÓGICA DEL MODAL DE RETIRO ---
         function leaveParche() {
-            if(confirm("¿Te vas del parche? Tu cuenta se guardará en el bar pero dejarás de sumar.")) {
-                connections.forEach(c => c.open && c.send({ type: 'checkout', alias: myData.alias, avatar: myData.avatar, count: myCount }));
-                setTimeout(() => resetApp(), 500); // Espera medio segundo para que envíe el mensaje antes de cerrar
-            }
+            document.getElementById('checkoutCount').innerText = myCount; // Poner el número en el modal
+            document.getElementById('checkoutModal').classList.remove('hidden'); // Mostrar modal
+        }
+
+        function closeModal() {
+            document.getElementById('checkoutModal').classList.add('hidden'); // Ocultar modal
+        }
+
+        function confirmLeave() {
+            connections.forEach(c => c.open && c.send({ type: 'checkout', alias: myData.alias, avatar: myData.avatar, count: myCount }));
+            closeModal();
+            setTimeout(() => resetApp(), 500);
         }
 
         function resetApp() {
-            if (peer) {
-                connections.forEach(c => c.close());
-                peer.destroy();
-                peer = null;
-            }
-            Object.values(cameraStreams).forEach(stream => {
-                if(stream) stream.getTracks().forEach(t => t.stop());
-            });
-            
-            myCount = 0;
-            connections = [];
-            activeClients = {};
-            leftClients = {};
-            isScanning = { persona: true, bar: true };
-            
+            if (peer) { connections.forEach(c => c.close()); peer.destroy(); peer = null; }
+            Object.values(cameraStreams).forEach(stream => { if(stream) stream.getTracks().forEach(t => t.stop()); });
+            myCount = 0; connections = []; activeClients = {}; leftClients = {}; isScanning = { persona: true, bar: true };
             document.querySelectorAll('.card').forEach(el => el.classList.add('hidden'));
             document.getElementById('roleSelector').classList.remove('hidden');
         }
